@@ -1,0 +1,114 @@
+{% extends "customer/customer_base.html" %}
+
+{% block title %}{{ service.name }} - Service Details{% endblock %}
+
+{% block extra_css %}
+<style>
+  .service-header {
+      background-color: #f8f9fa;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+  }
+  .service-description {
+      font-size: 1.1rem;
+      color: #555;
+  }
+  .service-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #28a745;
+  }
+  .professional-card {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  .professional-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  .professional-img {
+      height: 180px; 
+      object-fit: cover;
+  }
+  .rating {
+      color: #ffc107;
+  }
+  .professionals-title { 
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="service-header">
+  <div class="container">
+      <div class="row align-items-center">
+          <div class="col-md-12">
+              <h1 class="display-4 mb-3">{{ service.name }}</h1>
+              <p class="service-description mb-3">{{ service.description }}</p>
+              <p class="service-price mb-0">Base Price: ₹{{ service.base_price }}</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <h2 class="mb-4 professionals-title">Available Professionals</h2> 
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">  
+      {% for professional in professionals %}
+      <div class="col">
+          <div class="card professional-card h-100">
+              {% if professional.professional_profile %}
+              <img src="{{ url_for('static', filename='uploads/' + professional.professional_profile.professional_photo) }}" 
+                   class="card-img-top professional-img" 
+                   alt="{{ professional.name }}">
+              <div class="card-body">
+                  <h5 class="card-title">{{ professional.name }}</h5>
+                  <p class="card-text"><strong>Experience:</strong> {{ professional.professional_profile.experience }} years</p>
+                  <p class="card-text"><strong>Profession:</strong> {{ professional.professional_profile.profession }}</p>
+                  <p class="card-text"><strong>Service Area:</strong> {{ professional.professional_profile.service_pincode }}</p>
+                  <p class="card-text">
+                      <strong>Rating:</strong> 
+                      <span class="rating">
+                          {% if professional.avg_review %}
+                              {{ "%.1f"|format(professional.avg_review) }} / 5
+                              {% for _ in range(5) %}
+                                  {% if loop.index <= professional.avg_review|round(0, 'floor')|int %}
+                                      &#9733;
+                                  {% elif loop.index - 0.5 <= professional.avg_review|round(1) %}
+                                      &#9734;
+                                  {% else %}
+                                      &#9734;
+                                  {% endif %}
+                              {% endfor %}
+                          {% else %}
+                              <span class="text-muted">No reviews yet</span>
+                          {% endif %}
+                      </span>
+                  </p>
+                  <a href="{{ url_for('customer.book_service', service_id=service.id, professional_id=professional.id) }}" class="btn btn-primary w-100">Book Now</a>
+              </div>
+              {% else %}
+              <div class="card-body">
+                  <h5 class="card-title">{{ professional.name }}</h5>
+                  <p class="card-text text-muted">Professional profile not available.</p>
+              </div>
+              {% endif %}
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+
+{% if not professionals %}
+<div class="container mt-5">
+  <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No Professionals Available</h4>
+    <p>We're sorry, but there are currently no professionals available for this service. Please check back later or explore our other services.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+

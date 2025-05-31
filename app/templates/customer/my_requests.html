@@ -1,0 +1,65 @@
+{% extends "customer/customer_base.html" %}
+
+{% block title %}My Requests{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>My Service Requests</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Professional</th>
+                <th>Date Requested</th>
+                <th>Date of Service</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.service.name }}</td>
+                <td>{{ request.professional.name if request.professional else 'Not Assigned' }}</td>
+                <td>{{ request.date_of_request.strftime('%Y-%m-%d') }}</td>
+                <td>{{ request.date_of_service.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    {% if request.status == 'pending' %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% elif request.status == 'accepted' %}
+                        <span class="badge bg-primary">Accepted</span>
+                    {% elif request.status == 'completed' %}
+                        <span class="badge bg-success">Completed</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ request.status|capitalize }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if request.status == 'pending' %}
+                    <a href="{{ url_for('customer.edit_request', request_id=request.id) }}" class="btn btn-sm btn-primary me-1">Edit</a>
+                    
+                    <form method="POST" action="{{ url_for('customer.delete_request', request_id=request.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this service request?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if request.status == 'accepted' and not request.completion_status %}
+                    <form method="POST" action="{{ url_for('customer.close_request', request_id=request.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-sm btn-success">Close</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if request.status == 'completed' and not request.review %}
+                    <a href="{{ url_for('customer.review', request_id=request.id) }}" class="btn btn-sm btn-info">Review</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not requests %}
+    <p class="text-center mt-4">No service requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

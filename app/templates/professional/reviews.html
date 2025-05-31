@@ -1,0 +1,24 @@
+{% extends "professional/professional_base.html" %}
+
+{% block title %}My Reviews{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">My Reviews</h1>
+    
+    {% if reviews %}
+        {% for review in reviews %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Rating: {{ review.rating }} / 5</h5>
+                <h6 class="card-subtitle mb-2 text-muted">By {{ review.reviewer.name }} on {{ review.created_at.strftime('%Y-%m-%d') }}</h6>
+                <p class="card-text">{{ review.comment }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

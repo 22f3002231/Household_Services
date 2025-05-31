@@ -1,0 +1,26 @@
+{% extends "customer/customer_base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Review Service</h1>
+    <h2>{{ service_request.service.name }} by {{ service_request.professional.name }}</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <select class="form-select" id="rating" name="rating" required>
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends "customer/customer_base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Edit Service Request</h1>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="date_of_service" class="form-label">Date of Service</label>
+            <input type="date" class="form-control" id="date_of_service" name="date_of_service" value="{{ service_request.date_of_service.strftime('%Y-%m-%d') }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="remarks" class="form-label">Remarks</label>
+            <textarea class="form-control" id="remarks" name="remarks" rows="3">{{ service_request.remarks }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Request</button>
+    </form>
+</div>
+{% endblock %}
+

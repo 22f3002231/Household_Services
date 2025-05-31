@@ -1,0 +1,60 @@
+{% extends "customer/customer_base.html" %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block dashboard_title %}Customer Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .service-card {
+        height: 100%;
+    }
+    .service-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+{% endblock %}
+
+{% block nav_items %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('customer.dashboard') }}">Available Services</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('customer.my_requests') }}">My Requests</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Available Services</h1>
+    <form action="{{ url_for('customer.dashboard') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search services..." name="search" value="{{ search_query }}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-4 mb-4">
+            <div class="card service-card">
+                <div class="card-body">
+                    <h5 class="card-title service-name">{{ service.name }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                    <p class="card-text"><strong>Base Price:</strong> ₹{{ service.base_price }}</p>
+                    <a href="{{ url_for('customer.service_details', service_id=service.id) }}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if not services %}
+    <p>No services found matching your search.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,107 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form action="{{ url_for('admin.dashboard') }}" method="GET" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Search professionals..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header bg-light text-dark">
+                    <h3 class="mb-0">Pending Professional Approvals</h3>
+                </div>
+                <div class="card-body p-0">
+                    {% if pending_professionals %}
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for professional in pending_professionals %}
+                                <tr>
+                                    <td>{{ professional.name }}</td>
+                                    <td>{{ professional.email }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.view_professional', user_id=professional.id) }}" class="btn btn-sm btn-outline-primary">View Profile</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-center m-3">No pending professional approvals</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-light text-dark">
+                    <h3 class="mb-0">Approved Professionals</h3>
+                </div>
+                <div class="card-body p-0">
+                    {% if approved_professionals %}
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Average Rating</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for professional in approved_professionals %}
+                                <tr>
+                                    <td>{{ professional.name }}</td>
+                                    <td>{{ professional.email }}</td>
+                                    <td>
+                                        {% if professional.is_blocked %}
+                                            <span class="badge bg-danger">Blocked</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if professional.avg_rating %}
+                                            {{ professional.avg_rating }} / 5
+                                        {% else %}
+                                            No ratings
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('admin.view_professional', user_id=professional.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                        <a href="{{ url_for('admin.block_user', user_id=professional.id) }}" class="btn btn-sm btn-outline-primary">
+                                            {% if professional.is_blocked %}
+                                                Unblock
+                                            {% else %}
+                                                Block
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="text-center m-3">No approved professionals found</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

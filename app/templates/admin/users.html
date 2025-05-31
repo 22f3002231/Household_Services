@@ -1,0 +1,33 @@
+{% extends "admin/admin_base.html" %}
+
+
+{% block title %}Admin - Users{% endblock %}
+
+{% block content %}
+<h2>All Users</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ 'Blocked' if user.is_blocked else 'Active' }}</td>
+            <td>
+                <a href="{{ url_for('admin.block_user', user_id=user.id) }}" class="btn btn-warning btn-sm">
+                    {{ 'Unblock' if user.is_blocked else 'Block' }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

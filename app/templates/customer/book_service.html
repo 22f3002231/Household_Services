@@ -1,0 +1,25 @@
+{% extends "customer/customer_base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Book Service: {{ service.name }}</h1>
+    <h2>Professional: {{ professional.name }}</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="date_of_service" class="form-label">Date of Service</label>
+            <input type="date" class="form-control" id="date_of_service" name="date_of_service" required>
+        </div>
+        <div class="mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            <input type="text" class="form-control" id="pincode" name="pincode" required>
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">Address</label>
+            <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Book Service</button>
+    </form>
+</div>
+{% endblock %}
+

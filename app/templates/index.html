@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeServices</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .split-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-side {
+            flex: 1;
+            background: linear-gradient(135deg, #36d1dc, #5b86e5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 2rem;
+        }
+
+        .right-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: white;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0.5rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-register {
+            background: #36d1dc;
+            border: none;
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: #5b86e5;
+            color: white;
+        }
+
+        .btn-login {
+            background: white;
+            border: 1px solid #36d1dc;
+            color: #36d1dc;
+        }
+
+        .btn-login:hover {
+            background: rgba(54, 209, 220, 0.1);
+        }
+
+        .auth-container {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .split-layout {
+                flex-direction: column;
+            }
+            
+            .left-side {
+                height: 40vh;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-layout">
+        <div class="left-side">
+            <div class="text-center">
+                <h1 class="hero-title">HomeServices</h1>
+                <p class="hero-text">Professional services at your doorstep</p>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="auth-container">
+                <div class="d-flex flex-column gap-3">
+                    <a href="{{ url_for('auth.register') }}"><button class="btn btn-custom btn-register">Register</button></a>
+                    <a href="{{ url_for('auth.login') }}"><button class="btn btn-custom btn-login">Log in</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

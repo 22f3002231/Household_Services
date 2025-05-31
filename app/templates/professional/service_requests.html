@@ -1,0 +1,48 @@
+{% extends "professional/professional_base.html" %}
+
+{% block title %}Service Requests - {{ status.capitalize() }}{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{{ status.capitalize() }} Service Requests</h1>
+
+{% if requests %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Customer</th>
+                <th>Date of Service</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.service.name }}</td>
+                <td>{{ request.customer.name }}</td>
+                <td>{{ request.date_of_service.strftime('%Y-%m-%d') }}</td>
+                <td>{{ request.status }}</td>
+                <td>
+                    {% if status == 'pending' %}
+                        <form action="{{ url_for('professional.accept_request', request_id=request.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                        </form>
+                        <form action="{{ url_for('professional.reject_request', request_id=request.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
+                    {% elif status == 'accepted' %}
+                        <form action="{{ url_for('professional.complete_request', request_id=request.id) }}" method="POST">
+                            <button type="submit" class="btn btn-sm btn-primary">Mark as Completed</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No {{ status }} service requests found.</p>
+{% endif %}
+{% endblock %}
+
